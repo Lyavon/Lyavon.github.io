@@ -13,5 +13,5 @@ head.appendChild(mathjax);
 let css = document.createElement('link');
 css.type = 'text/css';
 css.rel = 'stylesheet';
-css.href = 'https://lyavon.github.io/np_calc/np_calc.css';
+css.href = 'https://lyavon.github.io/np_calc/framework/np_calc.css';
 head.appendChild(css);
