@@ -7,8 +7,37 @@
   <body>
     <h3 class='bold'>Индекс оксигенации</h3>
     <hr/>
-    <p>Индекс оксигенации (ИО) — это параметр, используемый в анестезиологии-реаниматологии и интенсивной терапии для оценки функции обмена кислорода в легких при разных долях кислорода во вдыхаемом воздухе.</p>
+
+    <button id='description_button'>Описание</button>
+    <div id='description_content'>
+      <p>
+        Индекс оксигенации (ИО) — это параметр, используемый в
+        анестезиологии-реаниматологии и интенсивной терапии для оценки степени
+        эффективности вентиляции лёгких и диффузии \(O_2\) через
+        альвеолокапиллярную мембрану.
+      </p>
+      <p>
+        ИО может использоваться для указанных процессов в том числе и при
+        терапии с применением кислородной поддержки.
+      </p>
+    </div>
+    <script>
+      const description_content = get('#description_content');
+      const description_button = get('#description_button');
+      let show_description = true;
+      const toggleDescription = () => {
+        if (show_description) {
+          description_content.style.display = 'none';
+        } else {
+          description_content.style.display = 'block';
+        }
+        show_description = !show_description;
+      };
+      window.addEventListener('load', toggleDescription);
+      description_button.addEventListener('click', toggleDescription);
+    </script>
     <hr/>
+
     <input type="range" min="0" max="200" step="1" value="100" id="pao2_in_range">
       <input type="number" class='font-x-large' id="pao2_in_number" value="100" min="0" max="200"></input>
         <span class='font-x-large'>\(PaO_2, mmHg\)</span>
@@ -21,17 +50,12 @@
     </input>
     <br/>
     <p id="output" class='bold font-xx-large'/>
-    <hr/>
-    <p>ИО является качественным признаком для определения степени острой дыхательной недостаточности. В норме ИО равен примерно 500. Известно, что снижение ИО считается одним из главных  критериев острого респираторного дистресс-синдрома (ОРДС). При этом степень нарушения оксигенирующей функции легких является и дифференциально-диагностическим критерием для острого повреждения легких (ОПЛ) и его наиболее тяжелой стадии — ОРДС:</p>
-    <p>ИО < 300 — ОПЛ</p>
-    <p>ИО < 200 — ОРДС</p>
-
     <script>
       const oi = () => {
-        const oi = Math.round(
-          pao2_in_range.value / chio2_in_range.value * 100
-        );
-        return String.raw`\(ИО = \frac{PaO_2}{FiO_2} = ${oi} \)`;
+        const pao2 = pao2_in_range.value;
+        const chio2 = chio2_in_range.value;
+        const oi = Math.round(pao2 / chio2 * 100);
+        return String.raw`\(ИО = \frac{PaO_2}{FiO_2} = \frac{${pao2}}{0.${chio2}} = ${oi} \)`;
       };
       const updateOutput = () => {
         output.innerHTML = oi();
@@ -39,11 +63,11 @@
       };
       window.addEventListener('load', updateOutput);
 
-      pao2_in_number = get('#pao2_in_number');
-      pao2_in_range = get('#pao2_in_range');
-      chio2_in_number = get('#chio2_in_number');
-      chio2_in_range = get('#chio2_in_range');
-      output = get('#output');
+      let pao2_in_number = get('#pao2_in_number');
+      let pao2_in_range = get('#pao2_in_range');
+      let chio2_in_number = get('#chio2_in_number');
+      let chio2_in_range = get('#chio2_in_range');
+      let output = get('#output');
 
       pao2_in_number.addEventListener('change', (e) => {
         pao2_in_range.value = pao2_in_number.value;
@@ -61,7 +85,43 @@
         chio2_in_number.value = chio2_in_range.value;
         updateOutput();
       });
-
     </script>
+    <hr/>
+
+    <button id='advanced_button'>Подробнее</button>
+    <div id='advanced_content'>
+      <p>
+        ИО является качественным признаком для определения степени острой
+        дыхательной недостаточности. В норме ИО равен примерно 500. Известно,
+        что снижение ИО считается одним из главных  критериев острого
+        респираторного дистресс-синдрома (ОРДС). При этом степень нарушения
+        оксигенирующей функции легких является и
+        дифференциально-диагностическим критерием для острого повреждения
+        легких (ОПЛ) и его наиболее тяжелой стадии — ОРДС:
+      </p>
+      <p>
+        ИО < 300 — ОПЛ
+      </p>
+      <p>
+        ИО < 200 — ОРДС
+      </p>
+    </div>
+    <script>
+      const advanced_content = get('#advanced_content');
+      const advanced_button = get('#advanced_button');
+      let show_advanced = true;
+      const toggleAdvanced = () => {
+        if (show_advanced) {
+          advanced_content.style.display = 'none';
+        } else {
+          advanced_content.style.display = 'block';
+        }
+        show_advanced = !show_advanced;
+      };
+      window.addEventListener('load', toggleAdvanced);
+      advanced_button.addEventListener('click', toggleAdvanced);
+    </script>
+    <hr/>
+
   </body>
 </html>
