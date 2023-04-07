@@ -32,4 +32,30 @@ export default class Calc {
     for (var element of document.getElementsByClassName(name))
       element.classList.add(...inherits);
   }
+
+  static setMessageHandler(handler)
+  {
+    window.addEventListener(
+      'message',
+      (e) => {
+        if (!e.isTrusted) {
+          console.error("Got untrusted event: ", e);
+          return;
+        }
+        const message = JSON.parse(e.data);
+        handler(e.source, message);
+      },
+    );
+  }
+
+  static sendMessage(destination, message)
+  {
+    if ((typeof destination) == 'string')
+      destination = this.get(destination)
+    if ('contentWindow' in destination)
+      destination = destination.contentWindow;
+    if ((typeof message) != 'string')
+      message = JSON.stringify(message);
+    destination.postMessage(message, '*');
+  }
 }

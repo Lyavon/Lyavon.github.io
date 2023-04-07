@@ -6,13 +6,12 @@
       import {Calc} from './style.js';
 
       const title = Calc.get('.title_content');
-      window.addEventListener(
-        'message',
-        (event) => {
-          title.innerHTML = event.data;
-          MathJax.typeset(() => [title]);
-        },
-      );
+      Calc.setMessageHandler((src, msg) => {
+        if (!('title' in msg))
+          return;
+        title.innerHTML = msg.title;
+        MathJax.typesetPromise();
+      });
     </script>
   </head>
   <body>
