@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type='module'>
+      import {Calc} from './style.js';
+
+      const title = Calc.get('.title_content');
+      window.addEventListener(
+        'message',
+        (event) => {
+          title.innerHTML = event.data;
+          MathJax.typeset(() => [title]);
+        },
+      );
+    </script>
+  </head>
+  <body>
+    <div class='title_container'>
+      <div class='title_row'>
+        <div class='title_column'>
+          <div class='title_content'>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
