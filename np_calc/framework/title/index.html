@@ -6,11 +6,17 @@
       import {Calc} from './style.js';
 
       const title = Calc.get('.title_content');
+      let id = undefined;
+
       Calc.setMessageHandler((src, msg) => {
-        if (!('title' in msg))
+        if (!('event' in msg) || msg.event != 'setup')
           return;
-        title.innerHTML = msg.title;
-        MathJax.typesetPromise();
+        if ('id' in msg)
+          id = msg.id;
+        if ('title' in msg) {
+          title.innerHTML = msg.title;
+          MathJax.typesetPromise();
+        }
       });
     </script>
   </head>

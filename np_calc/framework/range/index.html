@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type='module'>
+      import {Calc} from './style.js';
+
+      const range = Calc.get('.range_range');
+      const label = Calc.get('.range_label_column');
+      const value = Calc.get('.range_number');
+      let parentWindow = undefined;
+      let id = undefined;
+
+      const emitNewValue = (value) => {
+        if (parentWindow != undefined && id != undefined)
+          Calc.sendMessage(
+            parentWindow,
+            {
+              event: 'value_change',
+              id: id,
+              value: value,
+            },
+          );
+      };
+      const updateValue = (newValue) => {
+        range.value = newValue;
+        value.value = newValue;
+        emitNewValue(newValue);
+      }
+
+      value.addEventListener(
+        'change',
+        (e) => updateValue(value.value),
+      );
+      value.addEventListener(
+        'input',
+        (e) => updateValue(value.value),
+      );
+      range.addEventListener(
+        'change',
+        (e) => updateValue(range.value),
+      );
+      range.addEventListener(
+        'input',
+        (e) => updateValue(range.value),
+      );
+      Calc.setMessageHandler(
+        (src, msg) => {
+          if (!('event' in msg) || msg.event != 'setup')
+            return;
+          parentWindow = src;
+          (['min', 'max', 'step']).forEach(k => range[k] = value[k] = msg[k]);
+          if ('label' in msg) {
+            label.innerHTML = msg.label;
+            MathJax.typesetPromise();
+          }
+          if ('id' in msg)
+            id = msg.id;
+          if ('value' in msg)
+            updateValue(msg.value);
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <div class='range_container'>
+      <div class='range_row'>
+        <div class='range_range_column'>
+          <input type='range' class='range_range'/>
+        </div>
+        <div class='range_indicator_column'>
+          <div class='range_row'>
+            <div class='range_number_column'>
+                <input class='range_number' type='number'/>
+            </div>
+            <div class='range_label_column'/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
