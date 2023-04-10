@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type='module'>
+      import Calc from '../primitives.js';
+      import  './style.js';
+
+      const equation_container = Calc.get('.equation_container');
+      const equation = Calc.get('.equation_content');
+      let parent = undefined;
+      let id = undefined;
+      let vars = {};
+      let visible_equation = '';
+      let underlying_equations = {};
+
+      const substitutions = () => {
+        let substs = {};
+        for (var eq in underlying_equations) {
+          if (!underlying_equations.hasOwnProperty(eq))
+            continue;
+          substs[eq] = underlying_equations[eq];
+          for (var v in vars) {
+            if (!vars.hasOwnProperty(v))
+              continue;
+            substs[eq] = substs[eq].replace(v, vars[v]);
+          }
+          substs[eq] = eval(substs[eq]);
+        }
+        return substs;
+      };
+
+      const calculate = () => {
+        let eq = visible_equation;
+        const substs = substitutions();
+        for (var s in substs) {
+          if (!substs.hasOwnProperty(s))
+            continue;
+          eq = eq.replace(s, substs[s]);
+        }
+        equation.innerHTML = eq;
+        MathJax.typesetPromise();
+      };
+
+      Calc.setMessageHandler((src, msg) => {
+        if (!('event' in msg))
+          return;
+        parent = src;
+        switch (msg.event) {
+        case 'setup':
+          if ('id' in msg)
+            id = msg.id;
+          if ('vars' in msg)
+            for (var v in msg.vars) {
+              if (!msg.vars.hasOwnProperty(v))
+                continue;
+              vars[v] = msg.vars[v];
+            }
+          if ('underlying_equations' in msg)
+            for (var v in msg.underlying_equations) {
+              if (!msg.underlying_equations.hasOwnProperty(v))
+                continue;
+              underlying_equations[v] = msg.underlying_equations[v];
+            }
+          if ('visible_equation' in msg)
+            visible_equation = msg.visible_equation;
+          calculate();
+          break;
+        default:
+          break;
+        }
+        Calc.sendMessage(
+          parent,
+          {
+            event: 'resize',
+            id: id,
+            height: equation_container.offsetHeight,
+          },
+        );
+      });
+      window.addEventListener(
+        'resize',
+        (e) => {
+          if (!id || !parent)
+            return;
+          Calc.sendMessage(
+            parent,
+            {
+              event: 'resize',
+              id: id,
+              height: equation_container.offsetHeight,
+            },
+          );
+        },
+      );
+    </script>
+  </head>
+  <body>
+    <div class='equation_container'>
+      <div class='equation_row'>
+        <div class='equation_column'>
+          <div class='equation_content'/>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
