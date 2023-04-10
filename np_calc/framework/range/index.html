@@ -3,8 +3,10 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script type='module'>
-      import {Calc} from './style.js';
+      import './style.js';
+      import Calc from '../primitives.js';
 
+      const range_container = Calc.get('.range_container');
       const range = Calc.get('.range_range');
       const label = Calc.get('.range_label_column');
       const value = Calc.get('.range_number');
@@ -46,6 +48,7 @@
       );
       Calc.setMessageHandler(
         (src, msg) => {
+          console.log(msg);
           if (!('event' in msg) || msg.event != 'setup')
             return;
           parentWindow = src;
@@ -54,11 +57,35 @@
             label.innerHTML = msg.label;
             MathJax.typesetPromise();
           }
-          if ('id' in msg)
+          if ('id' in msg) {
             id = msg.id;
+            Calc.sendMessage(
+              parentWindow,
+              {
+                event: 'resize',
+                id: id,
+                height: range_container.offsetHeight,
+              },
+            );
+          }
           if ('value' in msg)
             updateValue(msg.value);
         }
+      );
+      window.addEventListener(
+        'resize',
+        (e) => {
+          if (!id)
+            return;
+          Calc.sendMessage(
+            parentWindow,
+            {
+              event: 'resize',
+              id: id,
+              height: range_container.offsetHeight,
+            },
+          );
+        },
       );
     </script>
   </head>

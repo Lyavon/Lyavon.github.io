@@ -1,4 +1,6 @@
 export default class Calc {
+  static cssClasses = {};
+
   static get(id)
   {
     return document.querySelector(id);
@@ -31,6 +33,15 @@ export default class Calc {
     head.appendChild(style);
     for (var element of document.getElementsByClassName(name))
       element.classList.add(...inherits);
+    this.cssClasses[name] = inherits;
+  }
+
+  static setCssClass(element, name)
+  {
+    let classList = element.classList;
+    classList.add(name);
+    for (var cls of this.cssClasses[name])
+      element.classList.add(cls);
   }
 
   static setMessageHandler(handler)

@@ -3,21 +3,48 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script type='module'>
-      import {Calc} from './style.js';
+      import Calc from '../primitives.js';
+      import './style.js';
 
       const title = Calc.get('.title_content');
+      const title_container = Calc.get('.title_container');
       let id = undefined;
+      let parent = undefined;
 
       Calc.setMessageHandler((src, msg) => {
         if (!('event' in msg) || msg.event != 'setup')
           return;
+        parent = src;
         if ('id' in msg)
           id = msg.id;
         if ('title' in msg) {
           title.innerHTML = msg.title;
           MathJax.typesetPromise();
+          Calc.sendMessage(
+            parent,
+            {
+              event: 'resize',
+              id: id,
+              height: title_container.offsetHeight,
+            },
+          );
         }
       });
+      window.addEventListener(
+        'resize',
+        (e) => {
+          if (!id)
+            return;
+          Calc.sendMessage(
+            parent,
+            {
+              event: 'resize',
+              id: id,
+              height: title_container.offsetHeight,
+            },
+          );
+        },
+      );
     </script>
   </head>
   <body>
