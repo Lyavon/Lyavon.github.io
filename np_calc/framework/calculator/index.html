@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type='module'>
+      import Calc from '../primitives.js';
+      import './style.js';
+
+      let parent = undefined;
+      let id = undefined;
+      let equations = {};
+      let ranges = {};
+      const calculator_container = Calc.get('.calculator_container');
+      const range_insert = Calc.get('#range_insert');
+      const equation_insert = Calc.get('#equation_insert');
+
+      Calc.setMessageHandler((src, msg) => {
+        if (!('event' in msg))
+          return;
+        switch (msg.event) {
+        case 'resize':
+          if (!msg.height || !msg.id)
+            return;
+          let iframe = Calc.get(`#${msg.id}`);
+          iframe.height = msg.height;
+          if (parent && id)
+            Calc.sendMessage(
+              parent,
+              {
+                event: 'resize',
+                id: id,
+                height: calculator_container.offsetHeight,
+              }
+            );
+          break;
+        case 'value_change':
+          let info = {
+            event: 'setup',
+            vars: {
+            },
+          };
+          info.vars[msg.id] = msg.value;
+          for (var eq in equations) {
+            if (!equations.hasOwnProperty(eq))
+              continue;
+            Calc.sendMessage(
+              equations[eq],
+              info,
+            );
+          }
+          break;
+        case 'setup':
+          parent = src;
+          if ('id' in msg)
+            id = msg.id;
+          if ('ranges' in msg) {
+            for (var r in msg.ranges) {
+              if (!msg.ranges.hasOwnProperty(r))
+                continue;
+              let row = document.createElement('div');
+              Calc.setCssClass(row, 'calculator_row');
+              range_insert.appendChild(row);
+              let col = document.createElement('div');
+              Calc.setCssClass(col, 'calculator_col');
+              row.appendChild(col);
+              let iframe = document.createElement('iframe');
+              iframe.src = '../range';
+              iframe.width = '100%';
+              iframe.frameBorder = '0';
+              iframe.id = r;
+              ranges[r] = iframe;
+              col.appendChild(iframe);
+              let setup = msg.ranges[r];
+              setup.event = 'setup';
+              setup.id = r;
+              iframe.onload = (src = iframe, msg = setup) =>
+                Calc.sendMessage(
+                  iframe,
+                  msg,
+                );
+            }
+          }
+          if ('equations' in msg) {
+            for (var eq in msg.equations) {
+              if (!msg.equations.hasOwnProperty(eq))
+                continue;
+              let row = document.createElement('div');
+              Calc.setCssClass(row, 'calculator_row');
+              equation_insert.appendChild(row);
+              let col = document.createElement('div');
+              Calc.setCssClass(col, 'calculator_col');
+              row.appendChild(col);
+              let iframe = document.createElement('iframe');
+              iframe.src = '../equation';
+              iframe.width = '100%';
+              iframe.frameBorder = '0';
+              iframe.id = eq;
+              equations[eq] = iframe;
+              col.appendChild(iframe);
+              let setup = msg.equations[eq];
+              setup.event = 'setup';
+              setup.id = eq;
+              iframe.onload = (src = iframe, msg = setup) =>
+                Calc.sendMessage(
+                  iframe,
+                  msg,
+                );
+            }
+          }
+          break;
+        }
+      });
+      window.addEventListener(
+        'resize',
+        (e) => {
+          if (!id)
+            return;
+          Calc.sendMessage(
+            parent,
+            {
+              event: 'resize',
+              id: id,
+              height: calculator_container.offsetHeight,
+            },
+          );
+        },
+      );
+    </script>
+  </head>
+  <body>
+    <div class='calculator_container'>
+      <div id='range_insert'>
+      </div>
+      <div id='equation_insert'>
+      </div>
+  </body>
+</html>

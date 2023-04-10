@@ -48,7 +48,6 @@
       );
       Calc.setMessageHandler(
         (src, msg) => {
-          console.log(msg);
           if (!('event' in msg) || msg.event != 'setup')
             return;
           parentWindow = src;
