@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type='module'>
+      import Calc from '../primitives.js';
+      import './style.js';
+
+      const root = Calc.get('#root');
+      const title = Calc.get('#title');
+      const description = Calc.get('#description');
+      const calculator = Calc.get('#calculator');
+      let id = undefined;
+      let parent = undefined;
+
+      window.addEventListener(
+        'resize',
+        (e) => {
+          if (!id || !parent)
+            return;
+          Calc.sendMessage(
+            parent,
+            {
+              event: 'resize',
+              id: id,
+              height: root.offsetHeight,
+            },
+          );
+        },
+      );
+      Calc.setMessageHandler((src, msg) => {
+        if (!('event' in msg))
+          return;
+        switch (msg.event) {
+        case 'setup':
+          parent = src;
+          if ('id' in msg)
+            id = msg.id;
+          if ('title' in msg)
+            Calc.sendMessage(
+              title,
+              {
+                event: 'setup',
+                id: 'title',
+                title: msg.title,
+              },
+            );
+          if ('pages' in msg)
+            Calc.sendMessage(
+              description,
+              {
+                event: 'setup',
+                id: 'description',
+                pages: msg.pages,
+              },
+            );
+          if ('calculator' in msg) {
+            let setup = msg.calculator;
+            setup.id = 'calculator';
+            setup.event = 'setup';
+            Calc.sendMessage(
+              calculator,
+              setup,
+            );
+          }
+          break;
+        case 'resize':
+          let element = Calc.get(`#${msg.id}`);
+          if (!element)
+            return;
+          element.height = msg.height;
+          if (!id || !parent)
+            return;
+          Calc.sendMessage(
+            parent,
+            {
+              event: 'resize',
+              id: id,
+              height: root.offsetHeight,
+            },
+          );
+          break;
+        default:
+          break;
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class='calculator_page_container' id='root'>
+      <div class='calculator_page_row'>
+        <div class='calculator_page_column'>
+          <iframe src='../title' id='title' width='100%' frameBorder='0' style='display:block'>
+          </iframe>
+        </div>
+      </div>
+      <div class='calculator_page_row'>
+        <div class='calculator_page_column'>
+          <iframe src='../description' id='description' width='100%' frameBorder='0' style='display:block'>
+          </iframe>
+        </div>
+      </div>
+      <div class='calculator_page_row'>
+        <div class='calculator_page_column'>
+          <iframe src='../calculator' id='calculator' width='100%' frameBorder='0' style='display:block'>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
