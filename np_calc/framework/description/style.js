@@ -46,6 +46,13 @@ Calc.addCssClass(
   ],
 );
 Calc.addCssClass(
+  'description_content_item_hidden',
+  '',
+  [
+    'd-none',
+  ],
+);
+Calc.addCssClass(
   'description_list_group',
   '',
   [

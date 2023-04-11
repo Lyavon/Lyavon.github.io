@@ -14,7 +14,6 @@
       let parent = undefined;
 
       Calc.setMessageHandler((src, msg) => {
-          console.log(msg);
         if (!('event' in msg))
           return;
         switch (msg.event) {
@@ -37,36 +36,34 @@
                 let buttons = Calc.getAll('.description_list_item');
                 for (var i = 0; i < buttons.length; i++) {
                   let button = buttons[i];
-                  let iframe = Calc.get(`#${button.id}_page`);
+                  let div = Calc.get(`#${button.id}_div`);
                   if (button.id != id) {
                     Calc.setCssClass(button, 'description_list_item_inactive');
                     Calc.unsetCssClass(button, 'description_list_item_active');
-                    if (iframe) {
-                      console.log('setting height 0', iframe);
-                      iframe.height = '0';
-                    }
+                    Calc.setCssClass(div, 'description_content_item_hidden');
                   } else {
                     Calc.setCssClass(button, 'description_list_item_active');
                     Calc.unsetCssClass(button, 'description_list_item_inactive');
-                    if (iframe) {
-                      console.log('setting height 0', iframe);
-                      iframe.height = '1';
-                    }
+                    Calc.unsetCssClass(div, 'description_content_item_hidden');
+                    let iframe = Calc.get(`#${button.id}_page`);
+                    if (iframe)
+                      iframe.height--;
                   }
                 }
               };
               let div = document.createElement('div');
               Calc.setCssClass(div, 'description_content_item');
+              Calc.setCssClass(div, 'description_content_item_hidden');
+              div.id = `${button.id}_div`;
               content.appendChild(div);
-              let page = document.createElement('iframe');
-              page.src = msg.pages[p];
-              page.width = '100%';
-              page.height = '0';
-              page.frameBorder = '0';
-              page.id = `${button.id}_page`;
+              let page = Calc.createIframe(
+                msg.pages[p],
+                {
+                  id: `${button.id}_page`,
+                },
+              );
               page.onload = function (e, id = button.id) {
                 let page = Calc.get(`#${id}_page`);
-                console.log('onload', id, page);
                 Calc.sendMessage(
                   page,
                   {
@@ -92,7 +89,6 @@
             );
           break;
         case 'resize':
-          console.log(msg.id);
           let button = Calc.get(`#${msg.id}`);
           let page = Calc.get(`#${msg.id}_page`);
           if (
