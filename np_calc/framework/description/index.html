@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type='module'>
+      import Calc from '../primitives.js';
+      import './style.js';
+
+      const container = Calc.get('.description_container');
+      const index = Calc.get('.description_list_group');
+      const content = Calc.get('.description_content_column');
+
+      let id = undefined;
+      let parent = undefined;
+
+      Calc.setMessageHandler((src, msg) => {
+          console.log(msg);
+        if (!('event' in msg))
+          return;
+        switch (msg.event) {
+        case 'setup':
+          parent = src;
+          if ('id' in msg)
+            id = msg.id;
+          if ('pages' in msg) {
+            let n = 0;
+            for (var p in msg.pages) {
+              if (!msg.pages.hasOwnProperty(p))
+                continue;
+              let button = document.createElement('button');
+              button.id = `description_${n}`;
+              button.innerHTML = p;
+              Calc.setCssClass(button, 'description_list_item');
+              Calc.setCssClass(button, 'description_list_item_inactive');
+              index.appendChild(button);
+              button.onclick = (e, id = button.id) => {
+                let buttons = Calc.getAll('.description_list_item');
+                for (var i = 0; i < buttons.length; i++) {
+                  let button = buttons[i];
+                  let iframe = Calc.get(`#${button.id}_page`);
+                  if (button.id != id) {
+                    Calc.setCssClass(button, 'description_list_item_inactive');
+                    Calc.unsetCssClass(button, 'description_list_item_active');
+                    if (iframe) {
+                      console.log('setting height 0', iframe);
+                      iframe.height = '0';
+                    }
+                  } else {
+                    Calc.setCssClass(button, 'description_list_item_active');
+                    Calc.unsetCssClass(button, 'description_list_item_inactive');
+                    if (iframe) {
+                      console.log('setting height 0', iframe);
+                      iframe.height = '1';
+                    }
+                  }
+                }
+              };
+              let div = document.createElement('div');
+              Calc.setCssClass(div, 'description_content_item');
+              content.appendChild(div);
+              let page = document.createElement('iframe');
+              page.src = msg.pages[p];
+              page.width = '100%';
+              page.height = '0';
+              page.frameBorder = '0';
+              page.id = `${button.id}_page`;
+              page.onload = function (e, id = button.id) {
+                let page = Calc.get(`#${id}_page`);
+                console.log('onload', id, page);
+                Calc.sendMessage(
+                  page,
+                  {
+                    event: 'setup',
+                    id: id,
+                  },
+                )
+              }
+              div.appendChild(page);
+              n++;
+            }
+            Calc.get('#description_0').click();
+          }
+          MathJax.typesetPromise();
+          if (id)
+            Calc.sendMessage(
+              parent,
+              {
+                event: 'resize',
+                id: id,
+                height: container.offsetHeight,
+              },
+            );
+          break;
+        case 'resize':
+          console.log(msg.id);
+          let button = Calc.get(`#${msg.id}`);
+          let page = Calc.get(`#${msg.id}_page`);
+          if (
+            !button
+            || !page 
+            || button.classList.contains('description_list_item_inactive')
+          )
+            return;
+          page.height = msg.height;
+          if (parent && id)
+            Calc.sendMessage(
+              parent,
+              {
+                event: 'resize',
+                id: id,
+                height: container.offsetHeight,
+              },
+            );
+        }
+      });
+      window.addEventListener(
+        'resize',
+        (e) => {
+          if (!id)
+            return;
+          Calc.sendMessage(
+            parent,
+            {
+              event: 'resize',
+              id: id,
+              height: container.offsetHeight,
+            },
+          );
+        },
+      );
+    </script>
+  </head>
+  <body>
+    <div class='description_container'>
+      <div class='description_row'>
+        <div class='description_index_column'>
+          <div class='description_list_group'>
+          </div>
+        </div>
+      </div>
+      <div class='description_row'>
+        <div class='description_content_column'>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
