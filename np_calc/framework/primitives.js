@@ -6,6 +6,11 @@ export default class Calc {
     return document.querySelector(id);
   }
 
+  static getAll(id)
+  {
+    return document.querySelectorAll(id);
+  }
+
   static addCss(url)
   {
     let head = this.get('head');
@@ -22,6 +27,18 @@ export default class Calc {
     let script = document.createElement('script');
     script.src = url;
     head.appendChild(script);
+  }
+
+  static createIframe(src, params)
+  {
+    let iframe = document.createElement('iframe');
+    iframe.src = src;
+    if ('id' in params)
+      iframe.id = params.id;
+    iframe.width = (params.width || '100%');
+    iframe.frameBorder = (params.frameBorder || '0');
+    iframe.style = (params.style || 'display:block');
+    return iframe;
   }
 
   static addCssClass(name, content = '', inherits = [])
@@ -41,7 +58,15 @@ export default class Calc {
     let classList = element.classList;
     classList.add(name);
     for (var cls of this.cssClasses[name])
-      element.classList.add(cls);
+      classList.add(cls);
+  }
+
+  static unsetCssClass(element, name)
+  {
+    let classList = element.classList;
+    for (var cls of this.cssClasses[name])
+      classList.remove(cls);
+    classList.remove(name);
   }
 
   static setMessageHandler(handler)
