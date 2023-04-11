@@ -63,11 +63,12 @@
               let col = document.createElement('div');
               Calc.setCssClass(col, 'calculator_col');
               row.appendChild(col);
-              let iframe = document.createElement('iframe');
-              iframe.src = '../range';
-              iframe.width = '100%';
-              iframe.frameBorder = '0';
-              iframe.id = r;
+              let iframe = Calc.createIframe(
+                '../range',
+                {
+                  id: r,
+                },
+              );
               ranges[r] = iframe;
               col.appendChild(iframe);
               let setup = msg.ranges[r];
@@ -90,11 +91,12 @@
               let col = document.createElement('div');
               Calc.setCssClass(col, 'calculator_col');
               row.appendChild(col);
-              let iframe = document.createElement('iframe');
-              iframe.src = '../equation';
-              iframe.width = '100%';
-              iframe.frameBorder = '0';
-              iframe.id = eq;
+              let iframe = Calc.createIframe(
+                '../equation',
+                {
+                  id: eq,
+                },
+              );
               equations[eq] = iframe;
               col.appendChild(iframe);
               let setup = msg.equations[eq];

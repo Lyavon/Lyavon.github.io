@@ -4,13 +4,11 @@ import './style.js';
 let id = undefined;
 let parent = undefined;
 let container = Calc.get('#root');
-console.log(container);
 
 Calc.setMessageHandler((src, msg) => {
   if (!('event' in msg))
     return;
   id = msg.id;
-    console.log('setup', id);
   parent = src;
   Calc.sendMessage(
     parent,
@@ -26,7 +24,6 @@ window.addEventListener(
   (e) => {
     if (!parent || !id)
       return;
-    console.log('resize', id);
     Calc.sendMessage(
       parent,
       {
