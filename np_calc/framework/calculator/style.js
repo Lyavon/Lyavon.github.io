@@ -5,12 +5,14 @@ Calc.addCssClass(
   'calculator_container',
   '',
   [
-    'container-fluid',
-    'border',
-    'rounded',
-    'border-secondary',
-    'p-0',
     'bg-light',
+    'border',
+    'border-secondary',
+    'container-fluid',
+    'm-0',
+    'overflow-hidden',
+    'p-0',
+    'rounded',
   ],
 );
 Calc.addCssClass(

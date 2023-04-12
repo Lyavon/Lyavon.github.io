@@ -9,6 +9,7 @@ Calc.addCssClass(
     'border-primary',
     'container-fluid',
     'm-0',
+    'overflow-hiden',
     'p-0',
     'rounded',
   ],

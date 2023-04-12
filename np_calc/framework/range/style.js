@@ -5,12 +5,13 @@ Calc.addCssClass(
   'range_container',
   '',
   [
-    'container-fluid',
-    'm-0',
-    'p-1',
+    'bg-white',
     'border',
     'border-light',
-    'bg-white',
+    'container-fluid',
+    'm-0',
+    'overflow-hidden',
+    'p-0',
     'rounded',
   ],
 );
@@ -21,6 +22,7 @@ Calc.addCssClass(
     'row',
     'm-0',
     'align-items-center',
+    'rounded',
   ],
 );
 Calc.addCssClass(
@@ -29,6 +31,7 @@ Calc.addCssClass(
   [
     'col-md-8',
     'p-0',
+    'rounded',
   ],
 );
 Calc.addCssClass(
@@ -38,6 +41,7 @@ Calc.addCssClass(
     'col-md-4',
     'p-0',
     'm-0',
+    'rounded',
   ],
 );
 Calc.addCssClass(
@@ -46,6 +50,7 @@ Calc.addCssClass(
   [
     'col-sm-4',
     'p-1',
+    'rounded',
   ],
 );
 Calc.addCssClass(
@@ -56,6 +61,7 @@ Calc.addCssClass(
     'p-0',
     'fs-3',
     'fw-bold',
+    'rounded',
   ],
 );
 Calc.addCssClass(
