@@ -68,7 +68,6 @@ Calc.addCssClass(
   'range_range',
   '',
   [
-    'form-range',
   ],
 );
 Calc.addCssClass(
@@ -79,5 +78,3 @@ Calc.addCssClass(
     'fs-3',
   ],
 );
-
-export {Calc};

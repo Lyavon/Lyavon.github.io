@@ -29,7 +29,7 @@ export default class Calc {
     head.appendChild(script);
   }
 
-  static createIframe(src, params)
+  static createIframe(src, params = {})
   {
     let iframe = document.createElement('iframe');
     iframe.src = src;

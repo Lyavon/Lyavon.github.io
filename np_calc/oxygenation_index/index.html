@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script type='module'>
       import Calc from '../framework/primitives.js';
-      import '../framework/style.js';
+      import '../framework/page.js';
 
       const calc = Calc.get('#calc');
       calc.onload = function() {
@@ -58,24 +58,9 @@
           },
         );
       };
-      Calc.setMessageHandler((src, msg) => {
-        if (!('event' in msg))
-          return;
-        if (msg.event != 'resize')
-          return;
-        let element = Calc.get(`#${msg.id}`);
-        if (!element)
-          return;
-        element.height = msg.height;
-      });
     </script>
   </head>
-  <body>
-    <div class='container-fluid m-0 p-0'>
-      <div class='row m-0 p-0'>
-        <div class='col-12 m-0 p-0'>
-          <iframe src='../framework/calculator_page' id='calc' width='100%' frameBorder='0' style='display:block'></iframe>
-        </div>
-      </div>
+  <body id='root'>
+    <iframe src='../framework/calculator_page' id='calc' width='100%' frameBorder='0' style='display:block'></iframe>
   </body>
 </html>
