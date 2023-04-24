@@ -86,6 +86,8 @@
             return;
           parentWindow = src;
           (['min', 'max', 'step']).forEach(k => range[k] = value[k] = msg[k]);
+          if ('max' in msg)
+            value.style.width = String(msg.max).length + 1 + 'em';
           if ('label' in msg) {
             label.innerHTML = msg.label;
             MathJax.typesetPromise();
@@ -129,7 +131,7 @@
           <input type='range' class='range_range'/>
         </div>
         <div class='range_indicator_column'>
-          <div class='range_row'>
+          <div class='range_indicator_row'>
             <div class='range_number_column'>
                 <input class='range_number' type='number'/>
             </div>

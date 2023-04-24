@@ -26,6 +26,19 @@ Calc.addCssClass(
   ],
 );
 Calc.addCssClass(
+  'range_indicator_row',
+  '',
+  [
+    'align-content-center',
+    'align-items-center',
+    'd-flex',
+    'flex-row',
+    'justify-content-center',
+    'm-0',
+    'rounded',
+  ],
+);
+Calc.addCssClass(
   'range_range_column',
   '',
   [
@@ -48,7 +61,6 @@ Calc.addCssClass(
   'range_number_column',
   '',
   [
-    'col-sm-4',
     'p-1',
     'rounded',
   ],
@@ -57,10 +69,10 @@ Calc.addCssClass(
   'range_label_column',
   '',
   [
-    'col-sm-8',
-    'p-0',
+    'flex-md-grow-1',
     'fs-3',
     'fw-bold',
+    'p-0',
     'rounded',
   ],
 );
