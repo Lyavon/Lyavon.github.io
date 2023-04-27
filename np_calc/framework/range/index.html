@@ -2,40 +2,6 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <style>
-      input[type="range"] {
-        -webkit-appearance: none;
-        width: 100%;
-        height: 7px;
-        border-radius: 5px;
-        background-color: #6c757d;
-      }
-
-      input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        height: 20px;
-        width: 20px;
-        border-radius: 50%;
-        cursor: ew-resize;
-        background: #0d6efd;
-      }
-
-      input[type="range"]::-moz-range-thumb {
-        -webkit-appearance: none;
-        height: 20px;
-        width: 20px;
-        border-radius: 50%;
-        cursor: ew-resize;
-      }
-
-      input[type="range"]::-ms-thumb {
-        -webkit-appearance: none;
-        height: 20px;
-        width: 20px;
-        border-radius: 50%;
-        cursor: ew-resize;
-      }
-    </style>
     <script type='module'>
       import './style.js';
       import Calc from '../primitives.js';
@@ -66,11 +32,25 @@
 
       value.addEventListener(
         'change',
-        (e) => updateValue(value.value),
+        (e) => {
+          if (value.checkValidity()) {
+            if (value.value)
+              updateValue(value.value);
+          } else {
+            value.value = range.value;
+          }
+        }
       );
       value.addEventListener(
         'input',
-        (e) => updateValue(value.value),
+        (e) => {
+          if (value.checkValidity()) {
+            if (value.value)
+              updateValue(value.value);
+          } else {
+            value.value = range.value;
+          }
+        }
       );
       range.addEventListener(
         'change',
@@ -82,29 +62,55 @@
       );
       Calc.setMessageHandler(
         (src, msg) => {
-          if (!('event' in msg) || msg.event != 'setup')
+          if (!('event' in msg))
             return;
-          parentWindow = src;
-          (['min', 'max', 'step']).forEach(k => range[k] = value[k] = msg[k]);
-          if ('max' in msg)
-            value.style.width = String(msg.max).length + 1 + 'em';
-          if ('label' in msg) {
-            label.innerHTML = msg.label;
-            MathJax.typesetPromise();
+          switch (msg.event) {
+          case 'setup':
+            parentWindow = src;
+            (['min', 'max', 'step']).forEach(k => range[k] = value[k] = msg[k]);
+            if ('max' in msg)
+              value.style.width = String(msg.max).length + 1 + 'em';
+            if ('label' in msg) {
+              label.innerHTML = msg.label;
+              MathJax.typesetPromise().then((res) => {
+                label.style.width = label.offsetWidth + 'px';
+                value.style.width = value.offsetWidth + 'px';
+                Calc.sendMessage(
+                  parentWindow,
+                  {
+                    event: 'range_indicator_widths_change',
+                    id: id,
+                    label_width: label.offsetWidth,
+                    value_width: value.offsetWidth,
+                  },
+                );
+              });
+            }
+            if ('id' in msg) {
+              id = msg.id;
+              Calc.sendMessage(
+                parentWindow,
+                {
+                  event: 'resize',
+                  id: id,
+                  height: range_container.offsetHeight,
+                },
+              );
+            }
+            if ('value' in msg)
+              updateValue(msg.value);
+            break;
+          case 'range_indicator_widths_change':
+            const label_width = label.offsetWidth;
+            const value_width = value.offsetWidth;
+            if (label_width < msg.label_width)
+              label.style.width = msg.label_width + 'px';
+            if (value_width < msg.value_width)
+              value.style.width = msg.value_width + 'px';
+            break;
+          default:
+            break;
           }
-          if ('id' in msg) {
-            id = msg.id;
-            Calc.sendMessage(
-              parentWindow,
-              {
-                event: 'resize',
-                id: id,
-                height: range_container.offsetHeight,
-              },
-            );
-          }
-          if ('value' in msg)
-            updateValue(msg.value);
         }
       );
       window.addEventListener(
@@ -126,18 +132,14 @@
   </head>
   <body>
     <div class='range_container'>
-      <div class='range_row'>
-        <div class='range_range_column'>
-          <input type='range' class='range_range'/>
+      <div class='range_range_column'>
+        <input type='range' class='range_range'/>
+      </div>
+      <div class='range_indicator_column'>
+        <div class='range_number_column'>
+          <input class='range_number' type='number'/>
         </div>
-        <div class='range_indicator_column'>
-          <div class='range_indicator_row'>
-            <div class='range_number_column'>
-                <input class='range_number' type='number'/>
-            </div>
-            <div class='range_label_column'/>
-          </div>
-        </div>
+        <div class='range_label_column'/>
       </div>
     </div>
   </body>

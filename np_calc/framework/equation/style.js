@@ -32,7 +32,9 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'equation_content',
-  {},
+  {
+    'font-size': '2rem !important;',
+  },
   [
     'fs-2',
     'fw-bold',

@@ -8,7 +8,10 @@ Calc.addCssClass(
     'bg-white',
     'border',
     'border-light',
-    'container-fluid',
+    'd-flex',
+    'flex-column',
+    'flex-md-row',
+    'align-items-md-center',
     'm-0',
     'overflow-hidden',
     'p-0',
@@ -16,33 +19,11 @@ Calc.addCssClass(
   ],
 );
 Calc.addCssClass(
-  'range_row',
-  {},
-  [
-    'row',
-    'm-0',
-    'align-items-center',
-    'rounded',
-  ],
-);
-Calc.addCssClass(
-  'range_indicator_row',
-  {},
-  [
-    'align-content-center',
-    'align-items-center',
-    'd-flex',
-    'flex-row',
-    'justify-content-center',
-    'm-0',
-    'rounded',
-  ],
-);
-Calc.addCssClass(
   'range_range_column',
   {},
   [
-    'col-md-8',
+    'flex-grow-1',
+    'flex-shrink-1',
     'p-0',
     'rounded',
   ],
@@ -51,9 +32,12 @@ Calc.addCssClass(
   'range_indicator_column',
   {},
   [
-    'col-md-4',
-    'p-0',
+    'd-flex',
+    'justify-content-center',
+    'justify-content-md-start',
+    'align-items-center',
     'm-0',
+    'p-0',
     'rounded',
   ],
 );
@@ -67,10 +51,10 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'range_label_column',
-  {},
+  {
+    'font-size': '2rem !important;',
+  },
   [
-    'flex-md-grow-1',
-    'fs-3',
     'fw-bold',
     'p-0',
     'rounded',
@@ -89,4 +73,34 @@ Calc.addCssClass(
     'form-control',
     'fs-3',
   ],
+);
+Calc.addStyle(
+  'input[type="range"]',
+  {
+    '-webkit-appearance': 'none',
+    'background-color': '#6c757d',
+    'border-radius': '5px',
+    'height': '7px',
+    'width': '100%',
+  },
+);
+const thumbStyle = {
+  '-webkit-appearance': 'none',
+  'background': '#0d6efd',
+  'border-radius': '50%',
+  'cursor': 'ew-resize',
+  'height': '20px',
+  'width': '20px',
+};
+Calc.addStyle(
+  'input[type="range"]::-moz-range-thumb',
+  thumbStyle,
+);
+Calc.addStyle(
+  'input[type="range"]::-webkit-slider-thumb',
+  thumbStyle,
+);
+Calc.addStyle(
+  'input[type="range"]::-ms-thumb',
+  thumbStyle,
 );

@@ -49,6 +49,16 @@
             );
           }
           break;
+        case 'range_indicator_widths_change':
+          for (var r in ranges) {
+            if (!ranges.hasOwnProperty(r))
+              continue;
+            Calc.sendMessage(
+              ranges[r],
+              msg,
+            );
+          }
+          break;
         case 'setup':
           parent = src;
           if ('id' in msg)
