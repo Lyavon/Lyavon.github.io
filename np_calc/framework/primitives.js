@@ -41,12 +41,18 @@ export default class Calc {
     return iframe;
   }
 
-  static addCssClass(name, content = '', inherits = [])
+  static addCssClass(name, content = {}, inherits = [])
   {
     let head = this.get('head');
     let style = document.createElement('style');
     style.type = 'text/css';
-    style.innerHTML = `.${name}{${content}}`;
+    style.innerHTML = `.${name}{`;
+    for (let key in content) {
+      if (!content.hasOwnProperty(key))
+        continue;
+      style.innerHTML += `${key}: ${content[key]};`;
+    }
+    style.innerHTML += '}';
     head.appendChild(style);
     for (var element of document.getElementsByClassName(name))
       element.classList.add(...inherits);
@@ -67,6 +73,21 @@ export default class Calc {
     for (var cls of this.cssClasses[name])
       classList.remove(cls);
     classList.remove(name);
+  }
+
+  static addStyle(selector, rules)
+  {
+    let head = this.get('head');
+    let style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = `${selector}{`;
+    for (let key in rules) {
+      if (!rules.hasOwnProperty(key))
+        continue;
+      style.innerHTML += `${key}: ${rules[key]};`;
+    }
+    style.innerHTML += '}';
+    head.appendChild(style);
   }
 
   static setMessageHandler(handler)

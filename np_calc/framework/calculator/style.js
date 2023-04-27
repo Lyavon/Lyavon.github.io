@@ -3,7 +3,7 @@ import '../style.js';
 
 Calc.addCssClass(
   'calculator_container',
-  '',
+  {},
   [
     'bg-light',
     'border',
@@ -17,7 +17,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'calculator_row',
-  '',
+  {},
   [
     'row',
     'p-0',
@@ -26,7 +26,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'calculator_col',
-  '',
+  {},
   [
     'col-12',
     'p-0',

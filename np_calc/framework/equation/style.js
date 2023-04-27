@@ -3,28 +3,28 @@ import '../style.js';
 
 Calc.addCssClass(
   'equation_container',
-  '',
+  {},
   [
-    'container-fluid',
-    'p-0',
-    'm-0',
+    'bg-white',
     'border',
     'border-light',
-    'bg-white',
+    'container-fluid',
+    'm-0',
+    'p-0',
     'rounded',
   ],
 );
 Calc.addCssClass(
   'equation_row',
-  '',
+  {},
   [
-    'row',
     'm-0',
+    'row',
   ],
 );
 Calc.addCssClass(
   'equation_column',
-  '',
+  {},
   [
     'col-12',
     'p-0',
@@ -32,11 +32,11 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'equation_content',
-  '',
+  {},
   [
     'fs-2',
     'fw-bold',
-    'text-center',
     'p-2',
+    'text-center',
   ],
 );

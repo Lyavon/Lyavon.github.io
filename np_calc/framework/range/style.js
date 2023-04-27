@@ -3,7 +3,7 @@ import '../style.js';
 
 Calc.addCssClass(
   'range_container',
-  '',
+  {},
   [
     'bg-white',
     'border',
@@ -17,7 +17,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'range_row',
-  '',
+  {},
   [
     'row',
     'm-0',
@@ -27,7 +27,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'range_indicator_row',
-  '',
+  {},
   [
     'align-content-center',
     'align-items-center',
@@ -40,7 +40,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'range_range_column',
-  '',
+  {},
   [
     'col-md-8',
     'p-0',
@@ -49,7 +49,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'range_indicator_column',
-  '',
+  {},
   [
     'col-md-4',
     'p-0',
@@ -59,7 +59,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'range_number_column',
-  '',
+  {},
   [
     'p-1',
     'rounded',
@@ -67,7 +67,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'range_label_column',
-  '',
+  {},
   [
     'flex-md-grow-1',
     'fs-3',
@@ -78,13 +78,13 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'range_range',
-  '',
+  {},
   [
   ],
 );
 Calc.addCssClass(
   'range_number',
-  '',
+  {},
   [
     'form-control',
     'fs-3',

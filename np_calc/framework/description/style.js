@@ -3,7 +3,7 @@ import '../style.js';
 
 Calc.addCssClass(
   'description_container',
-  '',
+  {},
   [
     'border',
     'border-secondary',
@@ -15,15 +15,15 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'description_row',
-  '',
+  {},
   [
-    'row',
     'm-0',
+    'row',
   ],
 );
 Calc.addCssClass(
   'description_index_column',
-  '',
+  {},
   [
     'col-12',
     'p-0',
@@ -31,31 +31,31 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'description_content_column',
-  '',
+  {},
   [
     'col-12',
-    'p-0',
     'm-0',
+    'p-0',
   ],
 );
 Calc.addCssClass(
   'description_content_item',
-  '',
+  {},
   [
-    'p-0',
     'm-0',
+    'p-0',
   ],
 );
 Calc.addCssClass(
   'description_content_item_hidden',
-  '',
+  {},
   [
     'd-none',
   ],
 );
 Calc.addCssClass(
   'description_list_group',
-  '',
+  {},
   [
     'list-group',
     'list-group-horizontal-md',
@@ -63,21 +63,21 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'description_list_item',
-  '',
+  {},
   [
+    'active',
+    'border-0',
     'btn',
+    'flex-fill',
     'fs-4',
     'fw-bold',
-    'border-0',
     'rounded-0',
-    'flex-fill',
     'text-white',
-    'active',
   ],
 )
 Calc.addCssClass(
   'description_list_item_active',
-  '',
+  {},
   [
     'btn-primary',
     'list-group-item',
@@ -85,7 +85,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'description_list_item_inactive',
-  '',
+  {},
   [
     'btn-secondary',
     'list-group-item-dark',

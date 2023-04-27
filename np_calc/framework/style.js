@@ -1,7 +1,13 @@
 import Calc from "./primitives.js";
 
-Calc.addCss('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css');
-Calc.addScript('https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
+let href = window.location.href;
+if (href.startsWith('http://localhost')) {
+	Calc.addCss('/np_calc/framework/bootstrap/css/bootstrap.min.css');
+	Calc.addScript('/np_calc/framework/mathjax/es5/tex-mml-chtml.js');
+} else {
+	Calc.addCss('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css');
+	Calc.addScript('https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
+}
 
 let head = Calc.get('head');
 

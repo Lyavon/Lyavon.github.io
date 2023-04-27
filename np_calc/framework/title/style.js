@@ -3,7 +3,7 @@ import '../style.js';
 
 Calc.addCssClass(
   'title_container',
-  '',
+  {},
   [
     'container-fluid',
     'p-0',
@@ -11,15 +11,15 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'title_row',
-  '',
+  {},
   [
-    'row',
     'm-0',
+    'row',
   ],
 );
 Calc.addCssClass(
   'title_column',
-  '',
+  {},
   [
     'col-12',
     'p-0',
@@ -27,7 +27,7 @@ Calc.addCssClass(
 );
 Calc.addCssClass(
   'title_content',
-  '',
+  {},
   [
     'bg-primary',
     'border',
