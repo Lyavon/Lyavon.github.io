@@ -7,9 +7,12 @@
       import './style.js';
 
       const root = Calc.get('#root');
-      const title = Calc.get('#title');
-      const description = Calc.get('#description');
-      const calculator = Calc.get('#calculator');
+      const title = Calc.createIframe('../title', {id: 'title'});
+      Calc.get('#title_container').appendChild(title);
+      const description = Calc.createIframe('../description', {id: 'description'});
+      Calc.get('#description_container').appendChild(description);
+      const calculator = Calc.createIframe('../calculator', {id: 'calculator'});
+      Calc.get('#calculator_container').appendChild(calculator);
       let id = undefined;
       let parent = undefined;
 
@@ -89,21 +92,15 @@
   <body>
     <div class='calculator_page_container' id='root'>
       <div class='calculator_page_row'>
-        <div class='calculator_page_column'>
-          <iframe src='../title' id='title' width='100%' frameBorder='0' style='display:block'>
-          </iframe>
+        <div class='calculator_page_column' id='title_container'>
         </div>
       </div>
       <div class='calculator_page_row'>
-        <div class='calculator_page_column'>
-          <iframe src='../calculator' id='calculator' width='100%' frameBorder='0' style='display:block'>
-          </iframe>
+        <div class='calculator_page_column' id='calculator_container'>
         </div>
       </div>
       <div class='calculator_page_row'>
-        <div class='calculator_page_column'>
-          <iframe src='../description' id='description' width='100%' frameBorder='0' style='display:block'>
-          </iframe>
+        <div class='calculator_page_column' id='description_container'>
         </div>
       </div>
     </div>

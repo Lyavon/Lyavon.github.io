@@ -36,8 +36,10 @@ export default class Calc {
     if ('id' in params)
       iframe.id = params.id;
     iframe.width = (params.width || '100%');
+    iframe.height = (params.height || '150px');
     iframe.frameBorder = (params.frameBorder || '0');
     iframe.style = (params.style || 'display:block');
+    iframe.scrolling = (params.scrolling || 'no');
     return iframe;
   }
 

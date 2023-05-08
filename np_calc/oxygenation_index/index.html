@@ -6,7 +6,7 @@
       import Calc from '../framework/primitives.js';
       import '../framework/page.js';
 
-      const calc = Calc.get('#calc');
+      const calc = Calc.createIframe('../framework/calculator_page', {id: 'calc'});
       calc.onload = function() {
         Calc.sendMessage(
           calc,
@@ -58,9 +58,9 @@
           },
         );
       };
+      Calc.get('#root').appendChild(calc);
     </script>
   </head>
   <body id='root'>
-    <iframe src='../framework/calculator_page' id='calc' width='100%' frameBorder='0' style='display:block'></iframe>
   </body>
 </html>
